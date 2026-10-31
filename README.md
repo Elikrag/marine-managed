@@ -27,7 +27,8 @@ npm run dev
 ```
 
 Open http://localhost:3000, sign in with `APP_PASSWORD`, and either edit the seeded boat or
-delete `data/marine.db` and start from the setup screen.
+start fresh: stop the dev server, delete `data/marine.db`, run `npm run db:push`, start it
+again. The server holds the DB file open, so it must be restarted after deleting the file.
 
 ## Connect Claude
 
