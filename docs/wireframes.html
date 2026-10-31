@@ -1,0 +1,507 @@
+<title>Marine Managed Wireframes</title>
+<style>
+/* Layout: app shell wireframe. Fixed left nav mirrors the real app; main area swaps screens. Deliberately low-fi: dashed boxes, mono labels. */
+:root{
+  --bg:#f6f5f1; --panel:#ffffff; --fg:#1f2326; --muted:#6b7177; --line:#9aa0a6; --soft:#e8e6df;
+  --accent:#1b6f8a; --ok:#2f8f5b; --warn:#c7841a; --crit:#b8372e;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#171a1c; --panel:#1f2326; --fg:#e8e6df; --muted:#9aa0a6; --line:#4d545a; --soft:#2a2f33; --accent:#5fb3cf; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#171a1c; --panel:#1f2326; --fg:#e8e6df; --muted:#9aa0a6; --line:#4d545a; --soft:#2a2f33; --accent:#5fb3cf; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);margin:0;padding-block:0;padding-inline:16px;min-height:100%}
+header.top{max-width:1180px;margin:0 auto;padding:20px 0 12px;display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px;border-bottom:1px dashed var(--line)}
+header.top h1{font:600 20px/1.2 var(--sans);margin:0;text-wrap:balance}
+header.top p{margin:0;color:var(--muted);font:13px/1.4 var(--mono)}
+.shell{max-width:1180px;margin:16px auto 40px;display:grid;grid-template-columns:180px minmax(0,1fr);gap:16px}
+nav{border:1px dashed var(--line);background:var(--panel);padding:8px;align-self:start;position:sticky;top:env(safe-area-inset-top,0px)}
+nav .brand{font:600 13px var(--mono);padding:8px;border-bottom:1px dashed var(--line);margin-bottom:6px}
+nav button{display:block;width:100%;text-align:left;background:none;border:1px solid transparent;color:var(--fg);font:13px var(--mono);padding:6px 8px;cursor:pointer;border-radius:3px}
+nav button:hover{background:var(--soft)}
+nav button[aria-current="page"]{background:var(--soft);border-color:var(--line)}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+nav .sep{border-top:1px dashed var(--line);margin:6px 0}
+main{min-width:0}
+section.screen{display:none;background:var(--panel);border:1px dashed var(--line);padding:16px}
+section.screen.active{display:block}
+.crumb{font:12px var(--mono);color:var(--muted);margin-bottom:10px}
+h2{font:600 17px/1.2 var(--sans);margin:0 0 4px}
+.lede{color:var(--muted);font-size:13px;margin:0 0 14px;max-width:65ch}
+.box{border:1px dashed var(--line);padding:10px;min-width:0}
+.box .lbl{font:11px var(--mono);color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.row>*{flex:1 1 160px;min-width:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-bottom:10px}
+.big{font:600 22px/1.1 var(--sans);font-variant-numeric:tabular-nums}
+.sub{font:12px var(--mono);color:var(--muted)}
+.btn{display:inline-block;border:1px solid var(--line);padding:4px 10px;font:12px var(--mono);border-radius:3px;background:var(--soft)}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.filter{border:1px dashed var(--line);padding:3px 8px;font:12px var(--mono);color:var(--muted)}
+.tbl{overflow-x:auto;border:1px dashed var(--line)}
+table{border-collapse:collapse;width:100%;font:13px var(--mono);font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px dashed var(--line);white-space:nowrap}
+th{font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+td.num,th.num{text-align:right}
+.chip{display:inline-block;font:11px var(--mono);padding:1px 6px;border-radius:3px;border:1px solid currentColor}
+.chip.high{color:var(--crit)}.chip.med{color:var(--warn)}.chip.low{color:var(--muted)}.chip.ok{color:var(--ok)}
+.chip.mcp{color:var(--accent)}
+ul.plain{list-style:none;margin:0;padding:0;font-size:13px}
+ul.plain li{padding:5px 0;border-bottom:1px dashed var(--soft);display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+ul.plain li .when{font:11px var(--mono);color:var(--muted);min-width:44px}
+.field{display:grid;grid-template-columns:140px minmax(0,1fr);gap:6px;font-size:13px;padding:4px 0;border-bottom:1px dashed var(--soft)}
+.field b{font-weight:500;color:var(--muted);font:12px var(--mono)}
+.field span{border-bottom:1px solid var(--line);min-height:18px}
+.photo{aspect-ratio:4/3;max-width:100%;border:1px dashed var(--line);display:grid;place-items:center;color:var(--muted);font:12px var(--mono);background:repeating-linear-gradient(135deg,transparent 0 8px,var(--soft) 8px 9px)}
+.board{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:10px}
+.col{border:1px dashed var(--line);padding:8px;min-height:160px}
+.col .lbl{font:11px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+.card{border:1px solid var(--line);background:var(--bg);padding:8px;font-size:12px;margin-bottom:8px;border-radius:3px}
+.card .t{font-weight:600;margin-bottom:3px}
+.thread{border:1px dashed var(--line);padding:8px}
+.msg{display:grid;grid-template-columns:46px 56px minmax(0,1fr);gap:8px;font-size:13px;padding:6px 0;border-bottom:1px dashed var(--soft)}
+.msg .who{font:11px var(--mono)}
+.msg .who.claude{color:var(--accent)}
+.msg .who.you{color:var(--muted)}
+.msg .when{font:11px var(--mono);color:var(--muted)}
+.bars{display:flex;align-items:flex-end;gap:6px;height:90px;border-bottom:1px solid var(--line);padding:0 4px}
+.bars i{flex:1;background:var(--accent);opacity:.55;display:block}
+.bars i.cur{opacity:1}
+.xax{display:flex;gap:6px;padding:4px;font:10px var(--mono);color:var(--muted)}
+.xax span{flex:1;text-align:center}
+code,pre{font:12px var(--mono)}
+pre{background:var(--bg);border:1px dashed var(--line);padding:10px;overflow-x:auto;margin:0}
+.note{font:12px var(--mono);color:var(--muted);border-left:3px solid var(--accent);padding:4px 10px;margin:10px 0}
+.docs{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.doc{border:1px dashed var(--line);padding:8px;font:11px var(--mono);aspect-ratio:1/1.2;display:flex;flex-direction:column;justify-content:flex-end;gap:2px}
+.doc .k{color:var(--muted)}
+.tabs{display:flex;gap:4px;margin-bottom:10px;border-bottom:1px dashed var(--line)}
+.tabs span{padding:4px 10px;font:12px var(--mono);color:var(--muted);border:1px dashed transparent;border-bottom:none}
+.tabs span.on{color:var(--fg);border-color:var(--line);background:var(--panel)}
+@media (max-width:720px){.shell{grid-template-columns:1fr}nav{position:static;display:flex;flex-wrap:wrap;gap:4px}nav .brand,nav .sep{width:100%}nav button{width:auto}}
+@media (prefers-reduced-motion:no-preference){section.screen.active{animation:fade .15s ease-out}}
+@keyframes fade{from{opacity:.6}to{opacity:1}}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<header class="top">
+  <h1>Marine Managed — wireframes v0</h1>
+  <p>low-fi · click the nav to switch screens · sample data is illustrative</p>
+</header>
+
+<div class="shell">
+<nav aria-label="App screens">
+  <div class="brand">⚓ marine-managed</div>
+  <button data-s="overview" aria-current="page">Overview</button>
+  <button data-s="boat">Boat</button>
+  <button data-s="engines">Engines</button>
+  <button data-s="systems">Systems</button>
+  <button data-s="trailer">Trailer</button>
+  <div class="sep"></div>
+  <button data-s="service">Service log</button>
+  <button data-s="issues">Issues</button>
+  <button data-s="issue">↳ Issue detail</button>
+  <div class="sep"></div>
+  <button data-s="insurance">Insurance</button>
+  <button data-s="storage">Storage</button>
+  <button data-s="costs">Costs</button>
+  <button data-s="documents">Documents</button>
+  <div class="sep"></div>
+  <button data-s="mcp">Settings · Claude/MCP</button>
+</nav>
+
+<main>
+
+<!-- OVERVIEW -->
+<section class="screen active" id="s-overview">
+  <div class="crumb">/ overview</div>
+  <div class="row">
+    <div class="box" style="flex:0 0 120px"><div class="photo">photo</div></div>
+    <div class="box" style="flex:3 1 260px">
+      <div class="big">Salty Dog</div>
+      <div>2019 Boston Whaler 230 Outrage · 23 ft</div>
+      <div class="sub">Yamaha F300 · 412 hrs · HIN BWCE1234A919 · Reg. expires Mar 2027</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="box"><div class="lbl">Open issues</div><div class="big">3</div><div class="sub"><span class="chip high">1 high</span></div></div>
+    <div class="box"><div class="lbl">Next service</div><div class="big">100 hr</div><div class="sub">due in 12 engine hrs</div></div>
+    <div class="box"><div class="lbl">YTD spend</div><div class="big">$4,120</div><div class="sub">lifetime $18,940</div></div>
+    <div class="box"><div class="lbl">Renewals</div><div class="big">41 d</div><div class="sub">boat insurance · Progressive</div></div>
+  </div>
+  <div class="grid2">
+    <div class="box"><div class="lbl">Open issues</div>
+      <ul class="plain">
+        <li><span class="chip high">high</span> Bilge pump cycling every ~4 min <span class="sub">aft bilge</span></li>
+        <li><span class="chip med">med</span> Trim gauge erratic <span class="sub">F300</span></li>
+        <li><span class="chip low">low</span> T-top canvas zipper split <span class="sub">canvas</span></li>
+      </ul></div>
+    <div class="box"><div class="lbl">Recent activity</div>
+      <ul class="plain">
+        <li><span class="when">10/28</span><span class="chip mcp">claude</span> added note on "Bilge pump cycling"</li>
+        <li><span class="when">10/26</span>Service: oil + filter @ 400 h</li>
+        <li><span class="when">10/20</span>Issue opened: Trim gauge erratic</li>
+        <li><span class="when">10/14</span>Cost: fuel $96</li>
+      </ul></div>
+  </div>
+  <div class="box"><div class="lbl">Upcoming</div>
+    <ul class="plain">
+      <li><span class="when">~12 h</span>100 hr service (oil, filter, gear lube)</li>
+      <li><span class="when">Dec 11</span>Boat insurance renewal</li>
+      <li><span class="when">Apr</span>Trailer bearings repack (annual)</li>
+      <li><span class="when">Mar 2027</span>Registration expires</li>
+    </ul></div>
+</section>
+
+<!-- BOAT -->
+<section class="screen" id="s-boat">
+  <div class="crumb">/ boat</div>
+  <h2>Boat profile</h2>
+  <p class="lede">Read view with inline edit. Engines and systems are their own pages but summarized here.</p>
+  <div class="toolbar"><span class="btn primary">Edit</span><span class="btn">Upload photo</span><span class="btn">Attach document</span></div>
+  <div class="grid2">
+    <div class="box"><div class="lbl">Identity</div>
+      <div class="field"><b>name</b><span>Salty Dog</span></div>
+      <div class="field"><b>make / model</b><span>Boston Whaler 230 Outrage</span></div>
+      <div class="field"><b>year</b><span>2019</span></div>
+      <div class="field"><b>HIN</b><span>BWCE1234A919</span></div>
+      <div class="field"><b>hull</b><span>Deep-V · fiberglass</span></div>
+      <div class="field"><b>length / beam</b><span>23'0" / 8'6"</span></div>
+      <div class="field"><b>home port</b><span>Jamestown, RI</span></div>
+    </div>
+    <div class="box"><div class="lbl">Registration &amp; purchase</div>
+      <div class="field"><b>reg. no.</b><span>RI 1234 AB</span></div>
+      <div class="field"><b>reg. expires</b><span>2027-03-31</span></div>
+      <div class="field"><b>purchased</b><span>2022-05-14 · $89,500</span></div>
+      <div class="field"><b>from</b><span>Private sale</span></div>
+      <div class="field"><b>notes</b><span>Second owner. Bottom painted 2024.</span></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="box"><div class="lbl">Engines (1)</div><ul class="plain"><li>Yamaha F300 · 2019 · 412 h <span class="sub">→ engines</span></li></ul></div>
+    <div class="box"><div class="lbl">Systems (9)</div><ul class="plain"><li>Garmin 943xsv · House bank 2×G31 · Rule 2000 bilge · … <span class="sub">→ systems</span></li></ul></div>
+  </div>
+  <div class="box"><div class="lbl">Photos &amp; documents</div>
+    <div class="docs"><div class="doc"><span class="k">photo</span>port side</div><div class="doc"><span class="k">photo</span>helm</div><div class="doc"><span class="k">manual</span>Whaler owner's</div><div class="doc"><span class="k">receipt</span>bill of sale</div></div>
+  </div>
+</section>
+
+<!-- ENGINES -->
+<section class="screen" id="s-engines">
+  <div class="crumb">/ engines</div>
+  <h2>Engines</h2>
+  <p class="lede">One card per engine. Hours drive service reminders, so updating hours is the most prominent action.</p>
+  <div class="toolbar"><span class="btn">+ Add engine</span></div>
+  <div class="box">
+    <div class="row">
+      <div style="flex:2 1 240px">
+        <div class="big">Yamaha F300 · 2019</div>
+        <div class="sub">serial 6CE-L-123456 · 300 hp · outboard · gas</div>
+        <div class="field"><b>prop</b><span>Saltwater Series II · 15¼ × 19 · SS</span></div>
+        <div class="field"><b>gear ratio</b><span>1.75:1</span></div>
+      </div>
+      <div class="box" style="flex:1 1 160px"><div class="lbl">Hours</div><div class="big">412</div><div class="sub">updated 10/26</div><div style="margin-top:6px"><span class="btn primary">Update hours</span></div></div>
+    </div>
+    <div class="box"><div class="lbl">Service intervals</div>
+      <div class="tbl"><table>
+        <tr><th>Item</th><th>Every</th><th>Last</th><th class="num">Next</th><th>Status</th></tr>
+        <tr><td>Oil + filter</td><td>100 h</td><td>400 h (10/26)</td><td class="num">500 h</td><td><span class="chip ok">ok</span></td></tr>
+        <tr><td>Gear lube</td><td>100 h</td><td>300 h</td><td class="num">400 h</td><td><span class="chip high">overdue 12 h</span></td></tr>
+        <tr><td>Water pump impeller</td><td>200 h / 2 y</td><td>2024-05</td><td class="num">2026-05</td><td><span class="chip warn med">due</span></td></tr>
+        <tr><td>Fuel filter</td><td>100 h</td><td>400 h</td><td class="num">500 h</td><td><span class="chip ok">ok</span></td></tr>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<!-- SYSTEMS -->
+<section class="screen" id="s-systems">
+  <div class="crumb">/ systems</div>
+  <h2>Systems inventory</h2>
+  <p class="lede">The component list Claude leans on when troubleshooting. Anything with a make/model/serial worth remembering.</p>
+  <div class="toolbar"><span class="btn primary">+ Add system</span><span class="filter">category ▾</span><span class="filter">has open issue</span></div>
+  <div class="tbl"><table>
+    <tr><th>Category</th><th>Name</th><th>Make / model</th><th>Installed</th><th>Last service</th><th>Issues</th></tr>
+    <tr><td>electrical</td><td>House battery bank</td><td>2× Odyssey G31 AGM</td><td>2023-04</td><td>2026-05</td><td>—</td></tr>
+    <tr><td>electrical</td><td>Start battery</td><td>Odyssey 34M</td><td>2023-04</td><td>—</td><td>—</td></tr>
+    <tr><td>plumbing</td><td>Bilge pump (aft)</td><td>Rule 2000 + float switch</td><td>2025-09</td><td>2025-09</td><td><span class="chip high">1</span></td></tr>
+    <tr><td>electronics</td><td>Chartplotter</td><td>Garmin 943xsv</td><td>2022-06</td><td>—</td><td>—</td></tr>
+    <tr><td>electronics</td><td>VHF</td><td>Standard Horizon GX2400</td><td>2022-06</td><td>—</td><td>—</td></tr>
+    <tr><td>steering</td><td>Hydraulic steering</td><td>SeaStar 1.7</td><td>2019</td><td>2025-05</td><td>—</td></tr>
+    <tr><td>fuel</td><td>Fuel/water separator</td><td>Racor 320R</td><td>2019</td><td>2026-10</td><td>—</td></tr>
+    <tr><td>canvas</td><td>T-top</td><td>Factory</td><td>2019</td><td>—</td><td><span class="chip low">1</span></td></tr>
+    <tr><td>safety</td><td>EPIRB</td><td>ACR GlobalFix V4</td><td>2022-06</td><td>battery 2027-06</td><td>—</td></tr>
+  </table></div>
+</section>
+
+<!-- TRAILER -->
+<section class="screen" id="s-trailer">
+  <div class="crumb">/ trailer</div>
+  <h2>Trailer</h2>
+  <p class="lede">Same pattern as the boat profile. Its insurance, registration and storage are summary cards pointing at the main pages.</p>
+  <div class="toolbar"><span class="btn primary">Edit</span><span class="btn">Upload photo</span></div>
+  <div class="grid2">
+    <div class="box"><div class="lbl">Identity</div>
+      <div class="field"><b>make / model</b><span>Venture VATB-6425</span></div>
+      <div class="field"><b>year</b><span>2019</span></div>
+      <div class="field"><b>VIN</b><span>4XTBT2523KM123456</span></div>
+      <div class="field"><b>axles</b><span>2 · torsion</span></div>
+      <div class="field"><b>capacity</b><span>6,425 lb</span></div>
+      <div class="field"><b>tires</b><span>ST225/75R15 · 65 psi</span></div>
+      <div class="field"><b>brakes</b><span>Hydraulic disc, both axles</span></div>
+      <div class="field"><b>reg. expires</b><span>2027-03-31</span></div>
+    </div>
+    <div>
+      <div class="box" style="margin-bottom:10px"><div class="lbl">Maintenance</div>
+        <div class="field"><b>bearings</b><span>repacked 2026-04 · next 2027-04</span></div>
+        <div class="field"><b>brake fluid</b><span>flushed 2025-04</span></div>
+        <div class="field"><b>tires</b><span>replaced 2024-06</span></div>
+      </div>
+      <div class="row">
+        <div class="box"><div class="lbl">Insurance</div><div>Rider on boat policy</div><div class="sub">→ insurance</div></div>
+        <div class="box"><div class="lbl">Storage</div><div>Driveway (summer) · yard (winter)</div><div class="sub">→ storage</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE -->
+<section class="screen" id="s-service">
+  <div class="crumb">/ service</div>
+  <h2>Service log</h2>
+  <p class="lede">Every maintenance, repair, upgrade and inspection. The new-entry form is the most-used form in the app, so it defaults date to today and prefills engine hours.</p>
+  <div class="toolbar"><span class="btn primary">+ New entry</span><span class="filter">kind ▾</span><span class="filter">target ▾</span><span class="filter">year ▾</span><span class="filter">by ▾</span><span class="filter">🔍 search</span></div>
+  <div class="tbl"><table>
+    <tr><th>Date</th><th>Kind</th><th>Target</th><th>Title</th><th>By</th><th class="num">Hours</th><th class="num">Cost</th><th></th></tr>
+    <tr><td>2026-10-26</td><td>maintenance</td><td>Yamaha F300</td><td>Oil + filter, 400 h</td><td>DIY</td><td class="num">400</td><td class="num">$86</td><td></td></tr>
+    <tr><td>2026-10-11</td><td>maintenance</td><td>Racor 320R</td><td>Replace fuel/water separator element</td><td>DIY</td><td class="num">396</td><td class="num">$31</td><td></td></tr>
+    <tr><td>2026-09-14</td><td>repair</td><td>Bilge pump (aft)</td><td>Replaced float switch</td><td>DIY</td><td class="num">381</td><td class="num">$42</td><td><span class="chip mcp">via mcp</span></td></tr>
+    <tr><td>2026-05-02</td><td>commission</td><td>Boat</td><td>Spring commissioning, bottom paint touch-up</td><td>Conanicut Marine</td><td class="num">352</td><td class="num">$1,240</td><td></td></tr>
+    <tr><td>2026-04-18</td><td>maintenance</td><td>Trailer</td><td>Bearings repacked, brakes inspected</td><td>DIY</td><td class="num">—</td><td class="num">$28</td><td></td></tr>
+    <tr><td>2025-11-20</td><td>winterize</td><td>Yamaha F300</td><td>Fog, stabilize fuel, gear lube</td><td>Conanicut Marine</td><td class="num">340</td><td class="num">$410</td><td></td></tr>
+  </table></div>
+  <div class="box" style="margin-top:10px"><div class="lbl">Row click → detail drawer</div>
+    <div class="field"><b>description</b><span>Yamalube 10W-30 FC-W, 5.3 qt. Filter 69J-13440-04. Drained hot, no metal on magnet.</span></div>
+    <div class="field"><b>parts</b><span>Oil ×6 qt $54 · Filter $19 · Drain gasket $3</span></div>
+    <div class="field"><b>labor</b><span>$0 (DIY)</span></div>
+    <div class="field"><b>attachments</b><span>receipt.jpg</span></div>
+    <div class="field"><b>resolves issue</b><span>—</span></div>
+  </div>
+</section>
+
+<!-- ISSUES -->
+<section class="screen" id="s-issues">
+  <div class="crumb">/ issues</div>
+  <h2>Issues</h2>
+  <p class="lede">Known problems, from "keep an eye on it" to "fix before launch". Board by status, list toggle.</p>
+  <div class="toolbar"><span class="btn primary">+ New issue</span><span class="filter">board | list</span><span class="filter">severity ▾</span><span class="filter">target ▾</span></div>
+  <div class="board">
+    <div class="col"><div class="lbl">Open · 2</div>
+      <div class="card"><div class="t">Bilge pump cycling every ~4 min</div><span class="chip high">high</span> aft bilge · 13 d · 3 notes <span class="chip mcp">🤖</span></div>
+      <div class="card"><div class="t">T-top canvas zipper split</div><span class="chip low">low</span> canvas · 60 d</div>
+    </div>
+    <div class="col"><div class="lbl">Monitoring · 1</div>
+      <div class="card"><div class="t">Trim gauge erratic</div><span class="chip med">med</span> F300 · 11 d · 1 note</div>
+    </div>
+    <div class="col"><div class="lbl">Scheduled · 0</div></div>
+    <div class="col"><div class="lbl">Resolved · 7</div>
+      <div class="card"><div class="t">Bilge float switch stuck</div><span class="chip ok">resolved 9/14</span></div>
+      <div class="card"><div class="t">Nav light intermittent</div><span class="chip ok">resolved 6/02</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ISSUE DETAIL -->
+<section class="screen" id="s-issue">
+  <div class="crumb">/ issues / 23</div>
+  <div class="row" style="align-items:center">
+    <h2 style="flex:3 1 240px">Bilge pump cycling every ~4 min</h2>
+    <div style="flex:0 0 auto"><span class="chip high">high</span> <span class="btn">Open ▾</span> <span class="btn">Edit</span></div>
+  </div>
+  <div class="grid2">
+    <div class="box">
+      <div class="field"><b>target</b><span>Bilge pump (aft) · Rule 2000</span></div>
+      <div class="field"><b>first noticed</b><span>2026-10-18</span></div>
+      <div class="field"><b>symptoms</b><span>Pump runs ~5 s every 4 min at the dock, dry bilge. Started after heavy rain.</span></div>
+      <div class="field"><b>suspected cause</b><span>Siphon back through discharge hose, or check valve failed</span></div>
+      <div class="field"><b>est. cost</b><span>$60–200</span></div>
+    </div>
+    <div class="box"><div class="lbl">Linked service entries</div>
+      <ul class="plain"><li><span class="when">9/14</span>Replaced float switch <span class="sub">(did not resolve)</span></li></ul>
+      <div style="margin-top:8px"><span class="btn">Log service that resolves this</span></div>
+    </div>
+  </div>
+  <div class="thread">
+    <div class="lbl" style="font:11px var(--mono);color:var(--muted);text-transform:uppercase;margin-bottom:6px">Notes / diagnosis thread</div>
+    <div class="msg"><span class="when">10/18</span><span class="who you">you</span><span>Noticed after rain. Bilge looks dry when it runs.</span></div>
+    <div class="msg"><span class="when">10/20</span><span class="who you">you</span><span>Checked float switch, moves freely. Pump itself seems fine.</span></div>
+    <div class="msg"><span class="when">10/28</span><span class="who claude">claude</span><span>Service log shows the float switch was replaced 9/14 so that's unlikely. Rule 2000 is on a hose run to the transom thru-hull with no vented loop listed in Systems. A dry bilge with regular cycling points to water siphoning back down the discharge hose and re-triggering the switch. Suggest: check for a check valve or vented loop in the discharge line, and confirm the thru-hull sits above the waterline at rest. Est. $40 for a vented loop.</span></div>
+    <div style="margin-top:8px"><span class="filter" style="display:block;padding:8px">add a note…</span></div>
+  </div>
+  <div class="note">Claude writes to this thread via the add_issue_note MCP tool. Author is tagged so you always know who said what.</div>
+</section>
+
+<!-- INSURANCE -->
+<section class="screen" id="s-insurance">
+  <div class="crumb">/ insurance</div>
+  <h2>Insurance &amp; registration</h2>
+  <p class="lede">Policies for boat and trailer. Anything renewing within 60 days surfaces on Overview.</p>
+  <div class="toolbar"><span class="btn primary">+ Add policy</span></div>
+  <div class="grid2">
+    <div class="box"><div class="lbl">Boat · Progressive</div>
+      <div class="big">Renews Dec 11 · 41 d</div>
+      <div class="field"><b>policy no.</b><span>9876-5432-10</span></div>
+      <div class="field"><b>premium</b><span>$1,180 / yr</span></div>
+      <div class="field"><b>hull value</b><span>$85,000 agreed</span></div>
+      <div class="field"><b>liability</b><span>$500,000</span></div>
+      <div class="field"><b>deductible</b><span>$1,000</span></div>
+      <div class="field"><b>agent</b><span>J. Rivera · 401-555-0142</span></div>
+      <div class="field"><b>documents</b><span>policy-2026.pdf · dec-page.pdf</span></div>
+    </div>
+    <div class="box"><div class="lbl">Trailer · rider on boat policy</div>
+      <div class="big">Renews Dec 11</div>
+      <div class="field"><b>coverage</b><span>$6,000 ACV</span></div>
+      <div class="field"><b>premium</b><span>incl.</span></div>
+      <div class="lbl" style="margin-top:14px">Registrations</div>
+      <div class="field"><b>boat</b><span>RI 1234 AB · exp 2027-03-31</span></div>
+      <div class="field"><b>trailer</b><span>RI TR 5678 · exp 2027-03-31</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STORAGE -->
+<section class="screen" id="s-storage">
+  <div class="crumb">/ storage</div>
+  <h2>Storage</h2>
+  <p class="lede">Current arrangements plus history. Seasonal is the norm, so records carry date ranges.</p>
+  <div class="toolbar"><span class="btn primary">+ Add arrangement</span></div>
+  <div class="tbl"><table>
+    <tr><th>What</th><th>Kind</th><th>Where</th><th>Season</th><th class="num">Cost</th><th>Contact</th></tr>
+    <tr><td>Boat</td><td>slip</td><td>Conanicut Marina, B-14</td><td>May–Oct 2026</td><td class="num">$3,900 / season</td><td>office 401-555-0100</td></tr>
+    <tr><td>Boat + trailer</td><td>yard (shrink-wrapped)</td><td>Conanicut Marine yard</td><td>Nov 2026–Apr 2027</td><td class="num">$1,450 / season</td><td>same</td></tr>
+    <tr><td>Trailer</td><td>driveway</td><td>home</td><td>May–Oct</td><td class="num">$0</td><td>—</td></tr>
+    <tr><td colspan="6" class="sub">2025 · slip B-14 · $3,700 · yard $1,400</td></tr>
+  </table></div>
+</section>
+
+<!-- COSTS -->
+<section class="screen" id="s-costs">
+  <div class="crumb">/ costs</div>
+  <h2>Costs</h2>
+  <p class="lede">Ledger is mostly auto-filled from service, insurance and storage. Manual rows for fuel and odds and ends.</p>
+  <div class="row">
+    <div class="box"><div class="lbl">YTD 2026</div><div class="big">$4,120</div></div>
+    <div class="box"><div class="lbl">Lifetime</div><div class="big">$18,940</div><div class="sub">since May 2022</div></div>
+    <div class="box"><div class="lbl">Per engine hour</div><div class="big">$46</div><div class="sub">lifetime ÷ hrs run</div></div>
+    <div class="box"><div class="lbl">Top category</div><div class="big">Storage</div><div class="sub">$5,350 · 28%</div></div>
+  </div>
+  <div class="grid2">
+    <div class="box"><div class="lbl">Spend by month · 2026</div>
+      <div class="bars"><i style="height:10%"></i><i style="height:6%"></i><i style="height:8%"></i><i style="height:22%"></i><i style="height:100%"></i><i style="height:18%"></i><i style="height:20%"></i><i style="height:14%"></i><i style="height:12%"></i><i style="height:16%" class="cur"></i><i style="height:0"></i><i style="height:0"></i></div>
+      <div class="xax"><span>J</span><span>F</span><span>M</span><span>A</span><span>M</span><span>J</span><span>J</span><span>A</span><span>S</span><span>O</span><span>N</span><span>D</span></div>
+    </div>
+    <div class="box"><div class="lbl">By category · YTD</div>
+      <div class="tbl"><table>
+        <tr><td>Storage</td><td class="num">$1,450</td></tr>
+        <tr><td>Service (shop)</td><td class="num">$1,240</td></tr>
+        <tr><td>Fuel</td><td class="num">$820</td></tr>
+        <tr><td>Parts</td><td class="num">$390</td></tr>
+        <tr><td>Registration</td><td class="num">$120</td></tr>
+        <tr><td>Other</td><td class="num">$100</td></tr>
+      </table></div>
+    </div>
+  </div>
+  <div class="toolbar"><span class="btn">+ Manual entry</span><span class="filter">category ▾</span><span class="filter">year ▾</span></div>
+  <div class="tbl"><table>
+    <tr><th>Date</th><th>Category</th><th>Vendor</th><th>Note</th><th class="num">Amount</th><th>Linked</th></tr>
+    <tr><td>2026-10-26</td><td>parts</td><td>West Marine</td><td>Oil, filter</td><td class="num">$86</td><td>service #41</td></tr>
+    <tr><td>2026-10-14</td><td>fuel</td><td>Conanicut fuel dock</td><td>38 gal</td><td class="num">$96</td><td>manual</td></tr>
+    <tr><td>2026-05-02</td><td>service</td><td>Conanicut Marine</td><td>Commissioning</td><td class="num">$1,240</td><td>service #38</td></tr>
+  </table></div>
+</section>
+
+<!-- DOCUMENTS -->
+<section class="screen" id="s-documents">
+  <div class="crumb">/ documents</div>
+  <h2>Documents</h2>
+  <p class="lede">Manuals, receipts, policies, photos. Uploads get text-extracted so Claude can search the F300 service manual, not just know it exists.</p>
+  <div class="toolbar"><span class="btn primary">Upload</span><span class="filter">kind ▾</span><span class="filter">attached to ▾</span><span class="filter">🔍 search text</span></div>
+  <div class="docs">
+    <div class="doc"><span class="k">manual · pdf · 14 MB</span>Yamaha F300 service manual</div>
+    <div class="doc"><span class="k">manual · pdf</span>Boston Whaler 230 owner's</div>
+    <div class="doc"><span class="k">manual · pdf</span>Garmin 943xsv</div>
+    <div class="doc"><span class="k">policy · pdf</span>Progressive 2026</div>
+    <div class="doc"><span class="k">registration · pdf</span>RI reg 2026</div>
+    <div class="doc"><span class="k">receipt · jpg</span>Oil change 10/26</div>
+    <div class="doc"><span class="k">receipt · pdf</span>Commissioning 5/02</div>
+    <div class="doc"><span class="k">photo · jpg</span>Wiring behind helm</div>
+    <div class="doc"><span class="k">photo · jpg</span>Bilge, aft</div>
+  </div>
+</section>
+
+<!-- MCP -->
+<section class="screen" id="s-mcp">
+  <div class="crumb">/ settings / claude</div>
+  <h2>Claude connection (MCP)</h2>
+  <p class="lede">Generate a key, paste the connector into claude.ai, and every read and write shows up in the activity log below.</p>
+  <div class="grid2">
+    <div class="box"><div class="lbl">API keys</div>
+      <div class="tbl"><table>
+        <tr><th>Label</th><th>Scope</th><th>Created</th><th>Last used</th><th></th></tr>
+        <tr><td>claude.ai</td><td>read + write</td><td>2026-10-01</td><td>2026-10-28</td><td><span class="btn">revoke</span></td></tr>
+        <tr><td>claude desktop</td><td>read only</td><td>2026-10-05</td><td>2026-10-22</td><td><span class="btn">revoke</span></td></tr>
+      </table></div>
+      <div style="margin-top:8px"><span class="btn primary">+ Generate key</span></div>
+    </div>
+    <div class="box"><div class="lbl">Connect</div>
+      <pre>Server URL:  https://boat.example.com/mcp
+Auth:        Bearer &lt;key&gt;
+Transport:   Streamable HTTP
+
+claude.ai → Settings → Connectors → Add custom</pre>
+      <div class="field" style="margin-top:8px"><b>writes</b><span>☑ require approval in-app before applying</span></div>
+    </div>
+  </div>
+  <div class="box"><div class="lbl">Tools exposed</div>
+    <div class="tbl"><table>
+      <tr><th>Tool</th><th>Mode</th><th>What it does</th></tr>
+      <tr><td>get_boat_context</td><td>read</td><td>One-shot summary: boat, engines, systems, open issues, recent service, renewals</td></tr>
+      <tr><td>get_boat_profile · get_trailer_profile</td><td>read</td><td>Full records</td></tr>
+      <tr><td>list_service_entries · get_service_entry</td><td>read</td><td>Filter by target, kind, since, query</td></tr>
+      <tr><td>list_issues · get_issue</td><td>read</td><td>Includes notes thread</td></tr>
+      <tr><td>get_insurance · get_storage · get_cost_summary</td><td>read</td><td></td></tr>
+      <tr><td>search · get_document</td><td>read</td><td>Full text incl. manual extracts</td></tr>
+      <tr><td>add_issue_note</td><td>write</td><td>Primary troubleshooting write path, author = claude</td></tr>
+      <tr><td>create_issue · update_issue</td><td>write</td><td>Status, severity, suspected cause, est. cost</td></tr>
+      <tr><td>add_service_entry · add_cost_entry · update_engine_hours</td><td>write</td><td>Tagged source = mcp</td></tr>
+    </table></div>
+  </div>
+  <div class="box" style="margin-top:10px"><div class="lbl">Activity log</div>
+    <ul class="plain">
+      <li><span class="when">10/28</span><span class="chip mcp">write</span> add_issue_note → issue #23 <span class="sub">approved</span> <span class="btn">undo</span></li>
+      <li><span class="when">10/28</span><span class="chip mcp">read</span> get_issue #23 · list_service_entries target=bilge · get_document "F300 service manual" p.112</li>
+      <li><span class="when">10/28</span><span class="chip mcp">read</span> get_boat_context</li>
+      <li><span class="when">10/22</span><span class="chip mcp">read</span> get_boat_context · get_cost_summary 2026</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+(function(){
+  var btns=document.querySelectorAll('nav button[data-s]');
+  var screens=document.querySelectorAll('section.screen');
+  function show(id){
+    screens.forEach(function(s){s.classList.toggle('active',s.id==='s-'+id);});
+    btns.forEach(function(b){ if(b.dataset.s===id){b.setAttribute('aria-current','page');} else {b.removeAttribute('aria-current');} });
+    try{history.replaceState(null,'','#'+id);}catch(e){}
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){show(b.dataset.s);});});
+  var h=(location.hash||'').replace('#','');
+  if(h&&document.getElementById('s-'+h)) show(h);
+})();
+</script>
